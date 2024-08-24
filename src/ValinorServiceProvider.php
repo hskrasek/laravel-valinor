@@ -7,6 +7,7 @@ namespace HSkrasek\LaravelValinor;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
 use Illuminate\Contracts\Foundation\Application;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -16,7 +17,14 @@ class ValinorServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-valinor')
-            ->hasConfigFile();
+            ->hasConfigFile()
+            ->hasInstallCommand(
+                fn (InstallCommand $command): InstallCommand => $command
+                    ->publishConfigFile()
+                    ->copyAndRegisterServiceProviderInApp()
+                    ->askToStarRepoOnGitHub('hskrasek/laravel-valinor')
+            )
+        ;
     }
 
     public function packageBooted(): void
