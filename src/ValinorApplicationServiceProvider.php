@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace HSkrasek\LaravelValinor;
@@ -11,7 +12,7 @@ class ValinorApplicationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->afterResolving(MapperBuilder::class, function (MapperBuilder $builder) {
-            if (!empty($constructors = $this->registerConstructors())) {
+            if (! empty($constructors = $this->registerConstructors())) {
                 $builder->registerConstructor(...$constructors);
             }
         });

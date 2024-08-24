@@ -23,8 +23,7 @@ class ValinorServiceProvider extends PackageServiceProvider
                     ->publishConfigFile()
                     ->copyAndRegisterServiceProviderInApp()
                     ->askToStarRepoOnGitHub('hskrasek/laravel-valinor')
-            )
-        ;
+            );
     }
 
     public function packageBooted(): void
