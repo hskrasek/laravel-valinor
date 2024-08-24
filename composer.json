@@ -3,6 +3,7 @@
     "type": "library",
     "description": "",
     "version": "0.0.1",
+    "homepage": "https://github.com/hskrasek/laravel-valinor",
     "authors": [
         {
             "name": "Hunter Skrasek",
@@ -12,7 +13,8 @@
     "require": {
         "php": "^8.3",
         "cuyz/valinor": "^1.12",
-        "illuminate/contracts": "^11.0"
+        "illuminate/contracts": "^11.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "larastan/larastan": "^2.9",
@@ -64,5 +66,12 @@
             "phpstan/extension-installer": true
         },
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HSkrasek\\LaravelValinor\\ValinorServiceProvider"
+            ]
+        }
     }
 }
