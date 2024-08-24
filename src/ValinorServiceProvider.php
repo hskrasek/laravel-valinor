@@ -19,11 +19,32 @@ class ValinorServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
-    public function boot(): void
+    public function packageBooted(): void
     {
+        $this->app->singleton(MapperBuilder::class, function (Application $app): MapperBuilder {
+            $builder = new MapperBuilder();
+
+            if (config('valinor.flexible_casting'))
+            {
+                $builder = $builder->enableFlexibleCasting();
+            }
+
+            if (config('valinor.superfluous_casting'))
+            {
+                $builder = $builder->allowSuperfluousKeys();
+            }
+
+            if (config('valinor.permissive_casting'))
+            {
+                $builder = $builder->allowPermissiveTypes();
+            }
+
+            return $builder;
+        });
+
         $this->app->singleton(
             abstract: TreeMapper::class,
-            concrete: fn (Application $app): TreeMapper => (new MapperBuilder)
+            concrete: fn (Application $app): TreeMapper => $app->make(MapperBuilder::class)
                 ->mapper()
         );
     }
