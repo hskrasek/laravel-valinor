@@ -22,20 +22,17 @@ class ValinorServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         $this->app->singleton(MapperBuilder::class, function (Application $app): MapperBuilder {
-            $builder = new MapperBuilder();
+            $builder = new MapperBuilder;
 
-            if (config('valinor.flexible_casting'))
-            {
+            if (config('valinor.flexible_casting')) {
                 $builder = $builder->enableFlexibleCasting();
             }
 
-            if (config('valinor.superfluous_casting'))
-            {
+            if (config('valinor.superfluous_casting')) {
                 $builder = $builder->allowSuperfluousKeys();
             }
 
-            if (config('valinor.permissive_casting'))
-            {
+            if (config('valinor.permissive_casting')) {
                 $builder = $builder->allowPermissiveTypes();
             }
 
