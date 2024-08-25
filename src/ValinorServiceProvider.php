@@ -6,6 +6,7 @@ namespace HSkrasek\LaravelValinor;
 
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
+use DateTimeInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -28,22 +29,29 @@ class ValinorServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        $this->app->singleton(MapperBuilder::class, function (Application $app): MapperBuilder {
+        $this->app->singletonIf(MapperBuilder::class, function (Application $app): MapperBuilder {
+            // TODO: I could "dog food" this into a typed object
+            $config = $app->make('config')->get('valinor');
             $builder = new MapperBuilder;
 
-            if (config('valinor.flexible_casting')) {
+            if ($config['flexible_casting']) {
                 $builder = $builder->enableFlexibleCasting();
             }
 
-            if (config('valinor.superfluous_casting')) {
+            if ($config['superfluous_casting']) {
                 $builder = $builder->allowSuperfluousKeys();
             }
 
-            if (config('valinor.permissive_casting')) {
+            if ($config['permissive_casting']) {
                 $builder = $builder->allowPermissiveTypes();
             }
 
-            return $builder;
+            if (!empty($config['supported_date_formats'])) {
+                $builder = $builder->supportDateFormats(...$config['supported_date_formats']);
+            }
+
+            return $builder
+                ->infer(name: DateTimeInterface::class, callback: fn() => $config['datetime_object']);
         });
 
         $this->app->singleton(
@@ -51,5 +59,19 @@ class ValinorServiceProvider extends PackageServiceProvider
             concrete: fn (Application $app): TreeMapper => $app->make(MapperBuilder::class)
                 ->mapper()
         );
+
+        $this->app->alias(TreeMapper::class, 'valinor.mapper');
+    }
+
+    /**
+     * @return array<string|class-string>
+     */
+    public function provides(): array
+    {
+        return [
+            'valinor.mapper',
+            MapperBuilder::class,
+            TreeMapper::class,
+        ];
     }
 }
