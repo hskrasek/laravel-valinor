@@ -71,7 +71,10 @@
         "laravel": {
             "providers": [
                 "HSkrasek\\LaravelValinor\\ValinorServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Mapper": "HSkrasek\\LaravelValinor\\Facades\\Mapper"
+            }
         }
     }
 }

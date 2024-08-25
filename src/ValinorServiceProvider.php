@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HSkrasek\LaravelValinor;
 
+use Carbon\Carbon;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
 use DateTimeInterface;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Throwable;
 
 class ValinorServiceProvider extends PackageServiceProvider
 {
@@ -51,7 +53,17 @@ class ValinorServiceProvider extends PackageServiceProvider
             }
 
             return $builder
-                ->infer(name: DateTimeInterface::class, callback: fn () => $config['datetime_object']);
+                ->infer(name: DateTimeInterface::class, callback: fn () => $config['datetime_class'])
+                ->registerConstructor(function (string $time): Carbon {
+                    return Carbon::parse($time);
+                })
+                ->filterExceptions(function (Throwable $exception) {
+                    if ($exception instanceof \Carbon\Exceptions\Exception) {
+                        return \CuyZ\Valinor\Mapper\Tree\Message\MessageBuilder::from($exception);
+                    }
+
+                    throw $exception;
+                });
         });
 
         $this->app->singleton(
