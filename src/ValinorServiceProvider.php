@@ -36,6 +36,7 @@ class ValinorServiceProvider extends PackageServiceProvider
             $config = $app->make('config')->get('valinor');
             $builder = new MapperBuilder;
 
+            //TODO: This builder construction feels clunkyg
             if ($config['flexible_casting']) {
                 $builder = $builder->enableFlexibleCasting();
             }
