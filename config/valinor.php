@@ -13,6 +13,7 @@ return [
 
     /**
      * From the docs: Timestamp and RFC3339
+     *
      * @see https://valinor.cuyz.io/latest/how-to/deal-with-dates
      */
     'supported_date_formats' => [
@@ -20,5 +21,5 @@ return [
         // DATE_COOKIE,
     ],
 
-    'datetime_class' => Carbon::class
+    'datetime_class' => Carbon::class,
 ];

@@ -46,12 +46,12 @@ class ValinorServiceProvider extends PackageServiceProvider
                 $builder = $builder->allowPermissiveTypes();
             }
 
-            if (!empty($config['supported_date_formats'])) {
+            if (! empty($config['supported_date_formats'])) {
                 $builder = $builder->supportDateFormats(...$config['supported_date_formats']);
             }
 
             return $builder
-                ->infer(name: DateTimeInterface::class, callback: fn() => $config['datetime_object']);
+                ->infer(name: DateTimeInterface::class, callback: fn () => $config['datetime_object']);
         });
 
         $this->app->singleton(
