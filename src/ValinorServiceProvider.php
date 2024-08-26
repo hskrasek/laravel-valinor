@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HSkrasek\LaravelValinor;
 
 use Carbon\Carbon;
+use CuyZ\Valinor\Mapper\ArgumentsMapper;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
 use DateTimeInterface;
@@ -73,7 +74,14 @@ class ValinorServiceProvider extends PackageServiceProvider
                 ->mapper()
         );
 
+        $this->app->singleton(
+            abstract: ArgumentsMapper::class,
+            concrete: fn (Application $app): ArgumentsMapper => $app->make(MapperBuilder::class)
+                ->argumentsMapper()
+        );
+
         $this->app->alias(TreeMapper::class, 'valinor.mapper');
+        $this->app->alias(ArgumentsMapper::class, 'valinor.arguments.mapper');
     }
 
     /**
@@ -83,8 +91,10 @@ class ValinorServiceProvider extends PackageServiceProvider
     {
         return [
             'valinor.mapper',
+            'valinor.arguments.mapper',
             MapperBuilder::class,
             TreeMapper::class,
+            ArgumentsMapper::class,
         ];
     }
 }
