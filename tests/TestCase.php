@@ -4,6 +4,7 @@ namespace HSkrasek\LaravelValinor\Tests;
 
 use HSkrasek\LaravelValinor\ValinorServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Workbench\App\Providers\WorkbenchServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -16,6 +17,7 @@ class TestCase extends Orchestra
     {
         return [
             ValinorServiceProvider::class,
+            WorkbenchServiceProvider::class,
         ];
     }
 

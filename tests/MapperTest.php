@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\JsonSource;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use HSkrasek\LaravelValinor\Facades\Mapper;
@@ -59,7 +58,7 @@ describe('mapper', function () {
         $thread = Mapper::map(
             signature: \HSkrasek\LaravelValinor\Tests\Fixtures\Thread::class,
             source: new JsonSource(
-                <<<JSON
+                <<<'JSON'
                 {
                     "id": 1337,
                     "content": "Do you like potatoes?",
