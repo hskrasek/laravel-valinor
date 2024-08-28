@@ -11,6 +11,7 @@ use CuyZ\Valinor\MapperBuilder;
 use DateTimeInterface;
 use HSkrasek\LaravelValinor\Http\ParsedRequest;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Redirector;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -97,6 +98,12 @@ class ValinorServiceProvider extends PackageServiceProvider
                 });
             },
         );
+
+        $this->app->resolving(ParsedRequest::class, function (ParsedRequest $request, Application $app): ParsedRequest {
+            return $request
+                ->withContainer($app)
+                ->withRedirector($app->make(Redirector::class));
+        });
     }
 
     /**
