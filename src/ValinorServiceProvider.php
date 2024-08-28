@@ -57,6 +57,7 @@ class ValinorServiceProvider extends PackageServiceProvider
 
             return $builder
                 ->infer(name: DateTimeInterface::class, callback: fn () => $config['datetime_class'])
+                // TODO: Extract these both to invokable classes
                 ->registerConstructor(function (string $time): Carbon {
                     return Carbon::parse($time);
                 })
