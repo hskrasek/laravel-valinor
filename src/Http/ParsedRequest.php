@@ -7,7 +7,8 @@ namespace HSkrasek\LaravelValinor\Http;
 use Illuminate\Container\Container;
 use Illuminate\Routing\Redirector;
 
-class ParsedRequest {
+class ParsedRequest
+{
     protected Container $container;
 
     protected Redirector $redirector;

@@ -66,7 +66,7 @@
             "@php vendor/bin/pint --ansi",
             "@php vendor/bin/phpstan analyse --verbose --ansi"
         ]
-    },g
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
