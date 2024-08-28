@@ -9,6 +9,7 @@ use CuyZ\Valinor\Mapper\ArgumentsMapper;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
 use DateTimeInterface;
+use HSkrasek\LaravelValinor\Http\ParsedRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -37,7 +38,7 @@ class ValinorServiceProvider extends PackageServiceProvider
             $config = $app->make('config')->get('valinor');
             $builder = new MapperBuilder;
 
-            //TODO: This builder construction feels clunkyg
+            //TODO: This builder construction feels clunky
             if ($config['flexible_casting']) {
                 $builder = $builder->enableFlexibleCasting();
             }
@@ -82,6 +83,19 @@ class ValinorServiceProvider extends PackageServiceProvider
 
         $this->app->alias(TreeMapper::class, 'valinor.mapper');
         $this->app->alias(ArgumentsMapper::class, 'valinor.arguments.mapper');
+
+        $this->app->beforeResolving(
+            abstract: ParsedRequest::class,
+            callback: function (string $abstract, array $parameters, Application $app) {
+                $app->bind($abstract, function (Application $app) use ($abstract) {
+                    return $app[TreeMapper::class]
+                        ->map(
+                            signature: $abstract,
+                            source: $app['request']->input(),
+                        );
+                });
+            },
+        );
     }
 
     /**
