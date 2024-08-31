@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
-use Laravel\Horizon\HorizonApplicationServiceProvider;
+use HSkrasek\LaravelValinor\ValinorApplicationServiceProvider;
 
 class ValinorServiceProvider extends ValinorApplicationServiceProvider
 {
+    public function register(): void
+    {
+        parent::register();
+
+        $this->app->singleton(
+            abstract: \HSkrasek\LaravelValinor\Config\Configuration::class,
+            concrete: \App\Config\Configuration::class,
+        );
+    }
     /**
      * @phpstan-return list|non-empty-list<class-string|callable>
      */

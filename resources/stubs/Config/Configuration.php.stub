@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Config;
+
+use HSkrasek\LaravelValinor\Config\Configuration as BaseConfiguration;
+
+class Configuration extends BaseConfiguration
+{
+    public static function mapping(): array
+    {
+        return [
+            'app' => BaseConfiguration\App::class,
+        ];
+    }
+}
