@@ -34,7 +34,6 @@ class ParsedRequest implements ValidatesWhenResolved
 
     /**
      * @todo Take this further
-     * @return array
      */
     public function parsedRules(): array
     {
